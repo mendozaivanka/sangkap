@@ -2,5 +2,5 @@
   "version": 1,
   "tag": "data-v1",
   "asset": "read-models-v1.tar.gz",
-  "sha256": "unreleased: run scripts/release-data.sh 1, which rewrites this file"
+  "sha256": "f593583e64d118e30b63adef79f6d8c282a60b4cb00d36849459f494a417897b"
 }

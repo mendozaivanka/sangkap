@@ -1,0 +1,13 @@
+---
+// Footnote chips for Astro pages: each figure id becomes a numbered link to its row on /evidence/.
+import { getFigures } from "@/lib/data";
+import { fnHref } from "@/lib/sangkap";
+type Props = { ids: string[] };
+const { figures } = await getFigures();
+const list = Astro.props.ids.map((id) => {
+  const f = figures.find((x) => x.id === id);
+  if (!f) throw new Error(`Fn: unknown figure id "${id}"`);
+  return f;
+});
+---
+{list.map((f) => <a class="fn" href={fnHref(f.n)} title={f.what} aria-label={`Source ${f.n}: ${f.what}`}>{f.n}</a>)}

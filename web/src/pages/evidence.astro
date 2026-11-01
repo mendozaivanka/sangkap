@@ -1,0 +1,111 @@
+---
+import SangkapLayout from "@/components/sangkap/SangkapLayout.astro";
+import Fn from "@/components/sangkap/Fn.astro";
+import { getEvidence, getFigures, getGuidance, getServings, getSources } from "@/lib/data";
+import { figureValue, licenceShort, findCell, amount } from "@/lib/sangkap";
+
+const [{ figures }, { sources }, evidence, guidance, servings] = await Promise.all([getFigures(), getSources(), getEvidence(), getGuidance(), getServings()]);
+const filter = findCell(servings, "filter", "caffeine", "arabica")!;
+const espresso = findCell(servings, "espresso", "caffeine", "arabica")!;
+const src = Object.fromEntries(sources.map((s) => [s.id, s]));
+const poole = src.poole2017;
+// interval plot: log scale from 0.5 to 2, line at 1 (no difference)
+const lx = (v: number) => ((Math.log(v) - Math.log(0.5)) / (Math.log(2) - Math.log(0.5))) * 100;
+---
+
+<SangkapLayout title="Evidence" current="evidence" description="Every number on Sangkap with its source, where in the source it is, the source's own words and its licence.">
+  <section class="mt-10 grid gap-4">
+    <span class="label-mono">Evidence · footnotes first</span>
+    <h1 class="text-[36px] leading-[1.06] font-bold tracking-[-0.03em] sm:text-[52px]">Every number has a footnote. <span class="rose">Open any of them.</span></h1>
+    <div class="grid max-w-[64ch] gap-4 text-[17px] leading-relaxed sm:text-lg">
+      <p>
+        A 200 ml cup of filter coffee carries about{" "}<strong class="rose font-bold">{amount(filter)}</strong> of caffeine<Fn ids={filter.figures} />; an espresso, about{" "}
+        <strong class="rose font-bold">{amount(espresso)}</strong> in 60 ml<Fn ids={espresso.figures} />. EFSA gives the concentrations; the per-cup numbers are Sangkap's
+        multiplication ({filter.calc}; {espresso.calc}).
+      </p>
+      <p>
+        For healthy adults, EFSA's 2015 opinion found that up to {guidance.dailyMg.value} mg a day<Fn ids={[guidance.dailyMg.figure]} />, and{" "}
+        {guidance.singleDoseMg.value} mg at one time<Fn ids={[guidance.singleDoseMg.figure]} />, do not give rise to safety concerns; in pregnancy, up to{" "}
+        {guidance.pregnancyDailyMg.value} mg a day<Fn ids={[guidance.pregnancyDailyMg.figure]} />. That is population guidance, not a figure for you.
+      </p>
+      <p>
+        Decaf is not caffeine-free: about {servings.decaf.mgPer100g} mg per 100 g brewed, so roughly {servings.decaf.mgPerCup} mg a cup<Fn ids={[servings.decaf.figure]} />.
+      </p>
+    </div>
+  </section>
+
+  <section class="mt-14 grid gap-3" aria-labelledby="h-reviews">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h2 id="h-reviews" class="text-[28px] font-bold tracking-[-0.03em]">What the review says</h2>
+      <span class="label-mono">Every row: outcome, estimate, interval, comparison</span>
+    </div>
+    <p class="max-w-[66ch] text-muted-foreground">
+      Associations as {poole.short}'s {evidence.design} reports them, with the comparison it used. No row is a claim of cause and effect;
+      these are associations in mostly observational data.
+    </p>
+    <div class="overflow-hidden rounded-[14px] border border-border bg-card">
+      <ol class="m-0 list-none p-0">
+        {evidence.rows.map((r) => (
+          <li class="grid gap-x-5 gap-y-1 border-b border-border px-5 py-3 last:border-0 md:grid-cols-[1.3fr_1.2fr_1fr_1.4fr] md:items-center">
+            <span class="font-medium">{r.outcome}{r.population === "pregnancy" && <span class="cap"> · in pregnancy</span>}</span>
+            <span class="font-mono text-sm">{r.measure} {r.estimate} <span class="text-muted-foreground">({r.ciLo}–{r.ciHi})</span></span>
+            <span class="relative h-4" role="img" aria-label={`${r.measure} ${r.estimate}, 95% interval ${r.ciLo} to ${r.ciHi}, on a log scale where 1 means no difference`}>
+              <span class="absolute inset-x-0 top-1/2 h-px bg-border"></span>
+              <span class="absolute top-0 h-4 w-px bg-foreground" style={`left:${lx(1)}%`}></span>
+              <span class="absolute top-1/2 h-1.5 -translate-y-1/2 rounded-full" style={`left:${lx(r.ciLo)}%;width:${lx(r.ciHi) - lx(r.ciLo)}%;background:color-mix(in srgb, var(--caffeine) 35%, transparent)`}></span>
+              <span class="absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-caffeine" style={`left:${lx(r.estimate)}%`}></span>
+            </span>
+            <span class="text-sm text-muted-foreground">{r.comparison}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="cap border-t border-border px-5 py-3">
+        {poole.citation} {poole.licence}; values transcribed by hand from the abstract on {evidence.rows[0].transcribedAt}.{" "}
+        <a class="link" href={poole.openUrl ?? poole.url}>Read it</a>. Interval: relative risk (RR) or odds ratio (OR) on a log scale from 0.5 to 2, line at 1 (no difference).
+        In the review, mortality and cardiovascular rows compare 3–4 cups a day with none; the review notes that harmful associations were largely
+        nullified by adjusting for smoking, except in pregnancy.
+      </p>
+    </div>
+  </section>
+
+  <section class="mt-14 grid gap-4" aria-labelledby="h-ledger">
+    <h2 id="h-ledger" class="text-[28px] font-bold tracking-[-0.03em]">Every figure, by source</h2>
+    <p class="max-w-[66ch] text-muted-foreground">
+      {figures.length} figures from {sources.length} sources. Hand-transcribed figures carry the source's own words and where to find them; PubChem
+      and USDA figures come from their APIs and are refetched monthly. Values the site shows as <span class="ph">[mg]</span> have no row: they are not yet sourced.
+    </p>
+    {sources.map((s) => (
+      <article class="overflow-hidden rounded-[14px] border border-border bg-card" aria-labelledby={`src-${s.id}`}>
+        <header class="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 border-b border-border px-5 py-4">
+          <div class="grid max-w-[72ch] gap-1">
+            <span class="label-mono">{s.short}</span>
+            <h3 id={`src-${s.id}`} class="text-[15px] leading-snug font-semibold tracking-normal">{s.citation}</h3>
+            <span class="cap">
+              {s.doi && <>DOI <a class="link" href={`https://doi.org/${s.doi}`}>{s.doi}</a> · </>}
+              <a class="link" href={s.openUrl ?? s.url}>{s.openUrl ? "free copy" : "website"}</a>
+              {s.accessed && <> · transcribed {s.accessed}</>}
+            </span>
+          </div>
+          <span class="flex flex-wrap gap-1.5">
+            <span class="rounded-full bg-muted px-2.5 py-0.5 font-mono text-[11px]">{licenceShort(s.licence)}</span>
+            <span class="rounded-full bg-muted px-2.5 py-0.5 font-mono text-[11px]">{s.retrievedBy}</span>
+          </span>
+        </header>
+        <ol class="m-0 list-none p-0">
+          {figures.filter((f) => f.source === s.id).map((f) => (
+            <li id={`f-${f.n}`} class="grid scroll-mt-6 grid-cols-[2.25rem_1fr] gap-x-3 gap-y-1 border-b border-border px-5 py-3 last:border-0 target:bg-accent md:grid-cols-[2.5rem_1.6fr_0.8fr_1fr]">
+              <span class="fn !ml-0 h-6 min-w-6 self-start">{f.n}</span>
+              <span class="grid gap-0.5">
+                <span class="text-[14.5px]">{f.what}</span>
+                <span class="cap">“{f.quote}”</span>
+              </span>
+              <span class="col-start-2 font-mono text-sm font-semibold md:col-start-auto">{figureValue(f)}</span>
+              <span class="cap col-start-2 md:col-start-auto"><a class="link" href={f.url}>{f.locator}</a></span>
+            </li>
+          ))}
+        </ol>
+        <p class="cap border-t border-border px-5 py-2.5">Licence: {s.licence}. Sangkap's use: {s.reuse}.</p>
+      </article>
+    ))}
+  </section>
+</SangkapLayout>

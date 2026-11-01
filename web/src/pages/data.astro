@@ -1,0 +1,72 @@
+---
+import SangkapLayout from "@/components/sangkap/SangkapLayout.astro";
+import { getSources, getSummary } from "@/lib/data";
+import { licenceShort } from "@/lib/sangkap";
+
+const [{ sources }, s] = await Promise.all([getSources(), getSummary()]);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const files = ["compounds.json", "servings.json", "species.json", "guidance.json", "evidence.json", "figures.json", "sources.json", "summary.json"];
+---
+
+<SangkapLayout title="About the data" current="data">
+  <section class="grid gap-4 pt-10">
+    <span class="label-mono">About the data</span>
+    <h1 class="text-4xl font-bold tracking-[-0.035em]">Sources, licences and downloads</h1>
+    <p class="max-w-[62ch] leading-relaxed text-muted-foreground">
+      Two sources are fetched by script (PubChem and USDA FoodData Central) and committed as snapshots. Every other number is transcribed by hand into a
+      table with one source per row, the page or table it is on and the source's own words. Each build is released as a versioned file and pinned by its
+      sha256. Where a value isn't sourced, the site shows a placeholder like <span class="ph">[mg]</span> instead of guessing.
+    </p>
+  </section>
+
+  <section class="grid gap-3 pt-10" aria-labelledby="h-src">
+    <h2 id="h-src" class="text-2xl font-bold tracking-[-0.025em]">Sources</h2>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {sources.map((x) => (
+        <a href={x.openUrl ?? x.url} class="grid content-start gap-2 rounded-[14px] border border-border bg-card p-4 hover:border-primary-strong">
+          <span class="label-mono">{x.short}</span>
+          <span class="text-[14px] leading-snug">{x.citation}</span>
+          <span class="flex flex-wrap gap-1.5">
+            <span class="rounded-full bg-muted px-2.5 py-0.5 font-mono text-[11px]">{licenceShort(x.licence)}</span>
+            <span class="rounded-full bg-muted px-2.5 py-0.5 font-mono text-[11px]">{x.retrievedBy} · {x.figures} figure{x.figures === 1 ? "" : "s"}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="grid gap-3 pt-10" aria-labelledby="h-lic">
+    <h2 id="h-lic" class="text-2xl font-bold tracking-[-0.025em]">Licences, plainly</h2>
+    <ul class="grid max-w-[68ch] list-disc gap-2 pl-5 leading-relaxed text-muted-foreground">
+      <li><strong class="font-semibold text-foreground">Redistributed:</strong> PubChem computed properties and 2D layouts (NCBI: no restrictions on PubChem computed data) and USDA FoodData Central caffeine values (CC0 1.0). Their snapshots are in the repository and the release.</li>
+      <li><strong class="font-semibold text-foreground">Cited, not redistributed:</strong> single figures from EFSA (© EFSA 2015), Poole et al. 2017 and Farah &amp; Donangelo 2006 (CC BY-NC 4.0), and from CC BY 4.0 papers. Each is one transcribed value with its source; no table or text is mirrored.</li>
+      <li><strong class="font-semibold text-foreground">Not used:</strong> Phenol-Explorer (non-commercial terms), ChEMBL (CC BY-SA 3.0, left out of v1 so every release stays CC BY 4.0), Google or Foursquare data.</li>
+      <li><strong class="font-semibold text-foreground">Sangkap's own:</strong> code MIT; read models and curated tables CC BY 4.0, keeping each figure's source.</li>
+    </ul>
+  </section>
+
+  <section class="grid gap-3 pt-10" aria-labelledby="h-missing">
+    <h2 id="h-missing" class="text-2xl font-bold tracking-[-0.025em]">Not yet sourced</h2>
+    <p class="max-w-[62ch] text-muted-foreground">These show as placeholders until an open source states them:</p>
+    <ul class="grid max-w-[66ch] list-disc gap-1.5 pl-5 text-muted-foreground">{s.notYetSourced.map((x) => <li>{x}</li>)}</ul>
+  </section>
+
+  <section class="grid gap-3 pt-10" aria-labelledby="h-how">
+    <h2 id="h-how" class="text-2xl font-bold tracking-[-0.025em]">How numbers are made</h2>
+    <ul class="grid max-w-[68ch] list-disc gap-2 pl-5 leading-relaxed text-muted-foreground">
+      <li>Per-cup caffeine is a concentration times a serving: EFSA's mg/L for espresso (60 ml) and filter (200 ml); Fuller &amp; Rao's lab brews (1 g coffee to 10 ml water) for French press and cold brew, at 200 ml, a serving Sangkap chose to match EFSA's filter cup.</li>
+      <li>Cafestol and kahweol are review ranges in mg/100 ml, times the serving. Chlorogenic acids are a review's per-200 ml range, split by arabica and robusta.</li>
+      <li>Derived numbers are rounded to whole mg from 10 up, two significant figures below.</li>
+      <li>The Pukaw curve is an illustrative one-compartment model: each dose decays as mg × 0.5<sup>t / half-life</sup>, with absorption drawn as instant. It takes no body weight.</li>
+    </ul>
+  </section>
+
+  <section class="grid gap-3 pt-10" aria-labelledby="h-dl">
+    <h2 id="h-dl" class="text-2xl font-bold tracking-[-0.025em]">Download</h2>
+    <p class="max-w-[62ch] text-muted-foreground">The exact files this site was built from (CC BY 4.0, keep each figure's source). <a class="link" href={`${base}data/latest.json`}>latest.json</a> points at the current version.</p>
+    <ul class="flex flex-wrap gap-2">
+      {files.map((f) => <li><a class="inline-flex min-h-11 items-center rounded-full border border-border bg-card px-4 font-mono text-sm" href={`${base}data/v1/sangkap/${f}`}>{f}</a></li>)}
+    </ul>
+    <p class="text-sm text-muted-foreground">Versions: <a class="link" href="https://github.com/mendozaivanka/sangkap/releases">GitHub releases</a> (data-v1, data-v2 …), each with a manifest and SHA256SUMS. PubChem fetched {s.pubchemFetchedAt}; FoodData Central {s.fdcFetchedAt}.</p>
+  </section>
+</SangkapLayout>

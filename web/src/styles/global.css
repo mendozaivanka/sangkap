@@ -1,0 +1,162 @@
+/* Sangkap styles. Nordic Rose comes first: it is vendored from ../nordic-rose (npm run design:sync), so edit it there.
+   Everything below is Sangkap's own: the four species colours (shared with Sinturon), caffeine's deep rose, the ink
+   grey for other compounds, footnote chips and placeholders. Sangkap keeps the default Nordic Rose palette. */
+@import "./nordic-rose.css";
+
+@theme inline {
+  --color-arabica: var(--sp-arabica);
+  --color-robusta: var(--sp-robusta);
+  --color-liberica: var(--sp-liberica);
+  --color-excelsa: var(--sp-excelsa);
+  --color-caffeine: var(--caffeine);
+}
+:root {
+  --sp-arabica: #3f6178;
+  --sp-robusta: #8f3a5c;
+  --sp-liberica: #5f8f6c;
+  --sp-excelsa: #9c86c9;
+  --caffeine: #8f3a5c;
+  --compound: #525c68;
+  --unsourced: #7d8896;
+  --pill-on: #f4b3c6;
+  --pill-on-ink: #3b1626;
+}
+[data-theme="dark"] {
+  --sp-arabica: #9cc0d8;
+  --sp-robusta: #f2a3bc;
+  --sp-liberica: #93c4a0;
+  --sp-excelsa: #bfaee6;
+  --caffeine: #f2a3bc;
+  --compound: #b4bfcb;
+  --unsourced: #8a95a3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sp-arabica: #9cc0d8;
+    --sp-robusta: #f2a3bc;
+    --sp-liberica: #93c4a0;
+    --sp-excelsa: #bfaee6;
+    --caffeine: #f2a3bc;
+    --compound: #b4bfcb;
+    --unsourced: #8a95a3;
+      }
+}
+
+@layer components {
+  .link {
+    color: var(--primary-strong);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .rose {
+    color: var(--primary-strong);
+  }
+  /* A pill toggle: 44px tall, selected = primary pink with dark rose ink */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 0.875rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--foreground);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .pill[aria-pressed="true"] {
+    background: var(--pill-on);
+    border-color: var(--pill-on);
+    color: var(--pill-on-ink);
+    font-weight: 600;
+  }
+  .pill:focus-visible,
+  .tab:focus-visible,
+  .fn:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .dot {
+    display: inline-block;
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+  }
+  /* Footnote chip: links a number to its row on /evidence/ */
+  .fn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.35em;
+    height: 1.35em;
+    padding: 0 0.3em;
+    margin-left: 0.15em;
+    border-radius: 9999px;
+    background: var(--accent);
+    color: var(--primary-strong);
+    font-family: var(--font-mono);
+    font-size: 0.72em;
+    font-weight: 600;
+    line-height: 1;
+    vertical-align: 0.15em;
+    text-decoration: none;
+  }
+  .fn:hover {
+    background: var(--primary);
+    color: var(--pill-on-ink);
+  }
+  /* Enlarge the chip's hit area to 44px without moving the text around it */
+  .fn {
+    position: relative;
+  }
+  .fn::after {
+    content: "";
+    position: absolute;
+    inset: -12px -6px;
+  }
+  /* A value not yet sourced: [mg], [ref] */
+  .ph {
+    font-family: var(--font-mono);
+    color: var(--primary-strong);
+    background: var(--accent);
+    border-radius: 6px;
+    padding: 0 0.3em;
+    font-size: 0.88em;
+    overflow-wrap: anywhere;
+  }
+  .band {
+    background: var(--fjord);
+    color: var(--foreground);
+    border-radius: 1.25rem;
+    padding: 0.75rem 1.125rem;
+  }
+  .badge-illustrative {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    background: var(--sand);
+    color: var(--foreground);
+    border-radius: 9999px;
+    padding: 3px 10px;
+  }
+  .cap {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+  }
+  details.fold > summary {
+    list-style: none;
+  }
+  details.fold > summary::-webkit-details-marker {
+    display: none;
+  }
+  details.fold > summary .fold-sign::before {
+    content: "+";
+  }
+  details.fold[open] > summary .fold-sign::before {
+    content: "−";
+  }
+}

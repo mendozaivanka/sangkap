@@ -1,0 +1,27 @@
+---
+import SangkapLayout from "@/components/sangkap/SangkapLayout.astro";
+import Overview, { type FigureRef } from "@/components/sangkap/Overview";
+import { getCompounds, getFigures, getGuidance, getServings, getSpecies } from "@/lib/data";
+
+const [{ compounds }, servings, speciesData, guidance, { figures }] = await Promise.all([
+  getCompounds(), getServings(), getSpecies(), getGuidance(), getFigures(),
+]);
+// Only what the island needs from each figure: its number (for the chip) and what it is (for the tooltip).
+const refs: Record<string, FigureRef> = Object.fromEntries(figures.map((f) => [f.id, { n: f.n, what: f.what }]));
+---
+
+<SangkapLayout title="What's in your cup" current="home">
+  <section class="mt-9 flex flex-wrap items-end justify-between gap-4">
+    <div class="flex max-w-[700px] flex-col gap-3">
+      <span class="label-mono">Overview · what's in a cup</span>
+      <h1 class="text-[34px] leading-[1.08] font-bold tracking-[-0.03em] sm:text-[48px]">
+        <span class="hidden sm:inline">What's in your cup, <span class="rose">three ways.</span></span>
+        <span class="sm:hidden">What's in <span class="rose">a cup.</span></span>
+      </h1>
+    </div>
+    <p class="cap hidden max-w-[36ch] text-[13px] sm:block">
+      Three views of one cup. Each tab has its own address (#cup, #molecules, #pukaw), so it can be linked and the back button works.
+    </p>
+  </section>
+  <Overview client:load compounds={compounds} servings={servings} speciesData={speciesData} guidance={guidance} figures={refs} />
+</SangkapLayout>

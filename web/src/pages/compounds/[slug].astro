@@ -1,0 +1,93 @@
+---
+import SangkapLayout from "@/components/sangkap/SangkapLayout.astro";
+import Fn from "@/components/sangkap/Fn.astro";
+import Structure from "@/components/sangkap/Structure";
+import { getCompounds, getFigures, getServings } from "@/lib/data";
+import { brewName, figureValue, amount, type Brew } from "@/lib/sangkap";
+import type { Compound } from "@/lib/data/schemas";
+
+export async function getStaticPaths() {
+  const { compounds } = await getCompounds();
+  const cards = [...new Set(compounds.map((c) => c.card))];
+  return cards.map((card) => ({ params: { slug: card }, props: { members: compounds.filter((c) => c.card === card) } }));
+}
+type Props = { members: Compound[] };
+const { members } = Astro.props;
+const [{ figures }, servings] = await Promise.all([getFigures(), getServings()]);
+const slugs = members.map((m) => m.slug);
+const title = members.map((m) => m.name).join(" + ");
+const facts = figures.filter((f) => slugs.includes(f.subject) && f.source !== "pubchem");
+const cells = servings.cells.filter((c) => slugs.includes(c.compound));
+const spName = (s: string) => (s === "any" ? "" : ` · ${s}`);
+---
+
+<SangkapLayout title={title} current="compounds" description={`${title}: structure, PubChem properties and how much is in a cup of coffee, every number with its source.`}>
+  <section class="grid gap-3 pt-10">
+    <a href="/sangkap/#molecules" class="link inline-flex min-h-11 items-center text-sm">← The molecules</a>
+    <span class="label-mono">{members[0].class}</span>
+    <h1 class="text-[36px] leading-tight font-bold tracking-[-0.03em] sm:text-[44px]">{title}</h1>
+    <p class="max-w-[62ch] text-lg text-muted-foreground">{members.map((m) => m.blurb).join(" ")}</p>
+  </section>
+
+  <section class="mt-8 grid gap-4 md:grid-cols-2">
+    {members.map((m) => (
+      <figure class="m-0 grid content-start gap-3 rounded-[14px] border border-border bg-card p-5">
+        {m.structure ? (
+          <>
+            <Structure structure={m.structure} label={`Skeletal structure of ${m.name.toLowerCase()}, from PubChem's 2D depiction`} bond={28} maxHeight={240} className="text-foreground" />
+            <figcaption class="cap text-center">2D layout from PubChem's depiction; unlabelled vertices are carbon; stereochemistry not drawn.</figcaption>
+          </>
+        ) : (
+          <div class="flex h-[160px] items-center justify-center rounded-[10px] bg-muted text-center font-mono text-sm text-muted-foreground">a class of roast polymers<br />no single structure</div>
+        )}
+        <dl class="m-0 grid grid-cols-[auto_1fr] gap-x-5 border-t border-border pt-3 font-mono text-sm">
+          {m.cid ? (
+            <>
+              <dt class="py-1 text-muted-foreground">Name</dt><dd class="m-0 py-1">{m.name}</dd>
+              <dt class="py-1 text-muted-foreground">Formula</dt><dd class="m-0 py-1">{m.formula}</dd>
+              <dt class="py-1 text-muted-foreground">Molar mass</dt><dd class="m-0 py-1">{m.molWeight} g/mol<Fn ids={[`mw-${m.slug}`]} /></dd>
+              <dt class="py-1 text-muted-foreground">XLogP3</dt><dd class="m-0 py-1">{m.xlogp}<Fn ids={[`xlogp-${m.slug}`]} /></dd>
+              <dt class="py-1 text-muted-foreground">PubChem CID</dt><dd class="m-0 py-1"><a class="link" href={`https://pubchem.ncbi.nlm.nih.gov/compound/${m.cid}`}>{m.cid}</a></dd>
+              <dt class="py-1 text-muted-foreground">IUPAC</dt><dd class="m-0 py-1 break-all text-xs">{m.iupac}</dd>
+            </>
+          ) : (
+            <>
+              <dt class="py-1 text-muted-foreground">PubChem</dt><dd class="m-0 py-1">no CID: a class, not a compound</dd>
+            </>
+          )}
+        </dl>
+      </figure>
+    ))}
+  </section>
+
+  {cells.length > 0 && (
+    <section class="mt-10 grid gap-3" aria-labelledby="h-cup">
+      <h2 id="h-cup" class="text-2xl font-bold tracking-[-0.025em]">In one serving</h2>
+      <ul class="m-0 grid list-none gap-0 overflow-hidden rounded-[14px] border border-border bg-card p-0">
+        {cells.map((c) => (
+          <li class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border px-5 py-2.5 last:border-0">
+            <span>{members.length > 1 ? `${c.compound} · ` : ""}{brewName[c.brew as Brew]}{spName(c.species)} <span class="cap">({servings.brews.find((b) => b.slug === c.brew)?.servingMl} ml)</span></span>
+            <span class="font-mono text-sm font-semibold">{amount(c)}<Fn ids={c.figures} /></span>
+            {c.calc && <span class="cap w-full">{c.calc}</span>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="mt-10 grid gap-3" aria-labelledby="h-facts">
+    <h2 id="h-facts" class="text-2xl font-bold tracking-[-0.025em]">What the sources say</h2>
+    {facts.length ? (
+      <ul class="m-0 grid list-none gap-0 overflow-hidden rounded-[14px] border border-border bg-card p-0">
+        {facts.map((f) => (
+          <li class="grid gap-1 border-b border-border px-5 py-3 last:border-0">
+            <span class="flex flex-wrap items-baseline justify-between gap-x-4"><span>{f.what}</span><span class="font-mono text-sm font-semibold">{figureValue(f)}<Fn ids={[f.id]} /></span></span>
+            <span class="cap">“{f.quote}”</span>
+          </li>
+        ))}
+      </ul>
+    ) : <p class="text-muted-foreground">Nothing transcribed yet.</p>}
+    {slugs.includes("trigonelline") && <p class="cap max-w-[62ch]">Trigonelline per serving, by brew, is <span class="ph">[mg]</span>: the only open figure is a range across all brew types.</p>}
+    {slugs.includes("melanoidins") && <p class="cap max-w-[62ch]">Not drawn in the cup: the only open figure is a range across all brew types, and melanoidins have no single structure or mass.</p>}
+  </section>
+</SangkapLayout>

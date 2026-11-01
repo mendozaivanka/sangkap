@@ -83,13 +83,13 @@ const family = [
         Sources <span class="fold-sign font-mono text-primary-strong" aria-hidden="true"></span>
       </summary>
       <p class="leading-relaxed">
-        Sources:{" "}
+        {"Sources: "}
         {sources.map((s, i) => (
           <>
             <a class="underline underline-offset-4 hover:text-foreground" href={s.openUrl ?? s.url}>{s.short}</a> ({licenceShort(s.licence)}){i < sources.length - 1 ? " · " : ". "}
           </>
         ))}
-        PubChem fetched {summary.pubchemFetchedAt}, FoodData Central {summary.fdcFetchedAt}. Code MIT; data CC BY 4.0.{" "}
+        {` PubChem fetched ${summary.pubchemFetchedAt}, FoodData Central ${summary.fdcFetchedAt}. Code MIT; data CC BY 4.0. `}
         <a class="underline underline-offset-4 hover:text-foreground" href="/sangkap/data/">About the data</a>.
       </p>
     </details>

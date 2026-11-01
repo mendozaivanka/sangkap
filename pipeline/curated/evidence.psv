@@ -1,0 +1,9 @@
+# What the review reports, in its own comparison. Hand-transcribed from the abstract; changes go through a pull request.
+# Wording rule: "was associated with". Never "reduces", "protects", "prevents" or "causes".
+id|outcome|measure|estimate|ci_lo|ci_hi|comparison|population|source|locator|transcribed_at
+poole-mortality|All-cause mortality|RR|0.83|0.79|0.88|3–4 cups a day vs none|general population|poole2017|Abstract, Results|2026-11-02
+poole-cv-mortality|Cardiovascular mortality|RR|0.81|0.72|0.90|3–4 cups a day vs none|general population|poole2017|Abstract, Results|2026-11-02
+poole-cvd|Cardiovascular disease|RR|0.85|0.80|0.90|3–4 cups a day vs none|general population|poole2017|Abstract, Results|2026-11-02
+poole-cancer|Incident cancer|RR|0.82|0.74|0.89|high vs low consumption|general population|poole2017|Abstract, Results|2026-11-02
+poole-birthweight|Low birth weight|OR|1.31|1.03|1.67|high vs low or no consumption|pregnancy|poole2017|Abstract, Results|2026-11-02
+poole-pregnancy-loss|Pregnancy loss|OR|1.46|1.06|1.99|high vs low or no consumption|pregnancy|poole2017|Abstract, Results|2026-11-02

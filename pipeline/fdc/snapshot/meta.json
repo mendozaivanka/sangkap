@@ -1,0 +1,12 @@
+{
+ "api": "https://api.nal.usda.gov/fdc/v1/foods",
+ "fetchedAt": "2026-11-02",
+ "fdcIds": [
+  171890,
+  171891,
+  171889,
+  174125
+ ],
+ "nutrientId": 1057,
+ "licence": "CC0 1.0"
+}

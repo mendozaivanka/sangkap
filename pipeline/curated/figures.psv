@@ -1,0 +1,36 @@
+# Every hand-cited figure on the site: one row per number, one source per row (see sources.psv), with where in the
+# source it is and the words it uses. Hand-edited; changes go through a pull request. value may be empty for a range.
+# subject: caffeine | cga | trigonelline | cafestol | kahweol | melanoidins | serving | species | guidance | halflife
+# brew: espresso | filter | french-press | cold-brew, comma-separated, or empty when the figure is not about one brew.
+id|subject|brew|species|what|value|lo|hi|unit|source|locator|quote
+serving-espresso|serving|espresso||An espresso, as EFSA serves it|60|||ml|efsa2015x|p. 3, chart of caffeine per serving|An espresso (60ml)
+serving-filter|serving|filter||A cup of filter coffee, as EFSA serves it|200|||ml|efsa2015x|p. 3, chart of caffeine per serving|A cup of filter coffee (200ml)
+caffeine-espresso|caffeine|espresso||Caffeine in espresso coffee, the concentration EFSA used in its intake assessment|1340|||mg/L|efsa2015|Table 1, p. 21 (mean of Heckman 2010, Mayo Clinic 2013, ANSES 2013)|Espresso coffee 1 340
+caffeine-filter|caffeine|filter||Caffeine in a coffee drink, the concentration EFSA used in its intake assessment|445|||mg/L|efsa2015|Table 1, p. 21 (from Fitt et al. 2013)|Coffee drink 445
+caffeine-french-press|caffeine|french-press||Caffeine in a hot brew made in a French press: medium roast, medium grind, 1 g coffee to 10 ml water, 98 °C, 6 min (±95% CI)|1040|970|1110|mg/L|fuller2017|Table 3, hot brew method, Medium - Medium|Medium - Medium ... 1040 ± 70
+caffeine-cold-brew|caffeine|cold-brew||Caffeine in cold brew, undiluted: medium roast, medium grind, 1 g coffee to 10 ml water, 21–25 °C, 24 h (±95% CI)|1180|1090|1270|mg/L|fuller2017|Table 3, cold brew method, Medium - Medium|Medium - Medium ... 1180 ± 90
+cga-cup-arabica|cga|filter,french-press|arabica|Chlorogenic acids in a 200 ml cup, domestic extraction, arabica||70|200|mg|farah2006|Section "Chlorogenic acids in the coffee brew"|Domestic extraction will result in 70-200 mg of CGA per 200ml cup, in the case of Arabica coffee
+cga-cup-robusta|cga|filter,french-press|robusta|Chlorogenic acids in a 200 ml cup, domestic extraction, robusta||70|350|mg|farah2006|Section "Chlorogenic acids in the coffee brew"|70-350 mg of CGA per 200 ml cup in Robusta coffee (Clifford, 1997)
+cga-green-arabica|cga||arabica|Total chlorogenic acids in green arabica beans, dry matter||4|8.4|%|farah2006|Section on CGA in green coffee|may vary from 4 to 8.4 % for Coffea arabica
+cga-green-robusta|cga||robusta|Total chlorogenic acids in green robusta beans, dry matter||7|14.4|%|farah2006|Section on CGA in green coffee|and from 7 to 14.4 % for Coffea canephora
+cga-roast-loss|cga|||Chlorogenic acids lost under drastic roasting, up to|95|||%|farah2006|Section on roasting|Drastic roasting conditions may produce losses of up to 95% of CGA (Trugo, 1984)
+cafestol-filter|cafestol|filter||Cafestol in filter coffee||0|0.1|mg/100 ml|maier2025|Table 2 (values from ref. 62)|Filter 0–0.1
+cafestol-espresso|cafestol|espresso||Cafestol in espresso||0.1|1.9|mg/100 ml|maier2025|Table 2 (values from ref. 62)|Espresso 0.1–1.9
+cafestol-french-press|cafestol|french-press||Cafestol in French press coffee||1.5|3.7|mg/100 ml|maier2025|Table 2 (values from ref. 62)|French press 1.5–3.7
+cafestol-boiled|cafestol|||Cafestol in Scandinavian boiled coffee (not one of Sangkap's brews)||0.5|8|mg/100 ml|maier2025|Table 2 (values from ref. 62)|Scandinavian boiled 0.5–8
+kahweol-filter|kahweol|filter||Kahweol in filter coffee||0|0.1|mg/100 ml|maier2025|Table 2 (values from ref. 62)|Filter 0–0.1
+kahweol-espresso|kahweol|espresso||Kahweol in espresso||0.1|2.6|mg/100 ml|maier2025|Table 2 (values from ref. 62)|Espresso 0.1–2.6
+kahweol-french-press|kahweol|french-press||Kahweol in French press coffee||1.7|5.3|mg/100 ml|maier2025|Table 2 (values from ref. 62)|French press 1.7–5.3
+trigonelline-brews|trigonelline|||Trigonelline in coffee brews from arabica and robusta blends, all brew types||12|50|mg/100 ml|socala2021|Table 2|Trigonelline 12–50 [mg per 100 mL]
+trigonelline-raw|trigonelline|||Trigonelline in raw beans, dry mass||1|3|%|peng2025|Section on trigonelline|constitutes 1–3% of the dry mass of raw beans
+melanoidins-brews|melanoidins|||Melanoidins in coffee brews from arabica and robusta blends, all brew types||500|1500|mg/100 ml|socala2021|Table 2|Melanoidins 500–1500 [mg per 100 mL]
+bean-caffeine-arabica|species||arabica|Caffeine in arabica beans, dry weight||1.2|1.5|%|peng2025|Introduction|C. arabica contains 1.2–1.5% by dry weight
+bean-caffeine-robusta|species||robusta|Caffeine in robusta beans, dry weight||2.2|2.7|%|peng2025|Introduction|C. canephora (Robusta) contains significantly more, ranging from 2.2 to 2.7%
+bean-caffeine-mature-ratio|species||robusta|Caffeine in mature robusta beans relative to arabica|1.5|||×|perrois2015|Results|In the mature bean (RG stage), the caffeine content is 50 % higher in Robusta than in Arabica.
+bean-caffeine-liberica-excelsa|species||liberica,excelsa|Caffeine in liberica and excelsa green beans, dry basis, reported together||1.2|3.8|g/100 g|kurniawan2026|Section on caffeine|Reported values for Liberica and Excelsa green beans typically range from approximately 1.2 to 3.8 g/100 g on a dry basis
+guidance-single|guidance|||Single dose that does not give rise to safety concerns, healthy adults|200|||mg|efsa2015|Abstract, p. 1|Single doses of caffeine up to 200 mg (about 3 mg/kg bw for a 70-kg adult) do not give rise to safety concerns.
+guidance-daily|guidance|||Habitual intake that does not give rise to safety concerns, non-pregnant adults|400|||mg/day|efsa2015|Abstract, p. 1|Habitual caffeine consumption up to 400 mg per day does not give rise to safety concerns for non-pregnant adults.
+guidance-pregnancy|guidance|||Habitual intake in pregnancy that does not give rise to safety concerns for the fetus|200|||mg/day|efsa2015|Abstract, p. 1|Habitual caffeine consumption up to 200 mg per day by pregnant women does not give rise to safety concerns for the fetus.
+guidance-sleep|guidance|||Single dose that may affect sleep in some adults, particularly close to bedtime|100|||mg|efsa2015|Summary, p. 3|Single doses of 100 mg (about 1.4 mg/kg bw for a 70-kg adult) of caffeine may increase sleep latency and reduce sleep duration in some adult individuals, particularly when consumed close to bedtime.
+halflife-adults|halflife|||Plasma half-life of caffeine in adults|4|2|8|h|efsa2015|Section 4.1.1, p. 31|Caffeine has a plasma half-life of about four hours with range of about two to eight hours.
+halflife-pregnancy|halflife|||Half-life in pregnancy (15 women)||6|16|h|efsa2015|Section 4.1.1, p. 32|the half-life of caffeine increased in 15 pregnant women to a range of 6–16 hours

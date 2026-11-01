@@ -1,0 +1,21 @@
+{
+ "api": "https://pubchem.ncbi.nlm.nih.gov/rest/pug",
+ "fetchedAt": "2026-11-02",
+ "fetchedAtUtc": "2026-11-01T17:04:40Z",
+ "cids": [
+  2519,
+  1794427,
+  5570,
+  108052,
+  114778
+ ],
+ "properties": [
+  "Title",
+  "MolecularFormula",
+  "MolecularWeight",
+  "XLogP",
+  "IUPACName",
+  "SMILES",
+  "ConnectivitySMILES"
+ ]
+}

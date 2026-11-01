@@ -1,0 +1,11 @@
+[project]
+name = "sangkap-pipeline"
+version = "1.0.0"
+description = "Builds Sangkap's data releases: what is in a cup of coffee (PubChem properties, USDA FoodData Central caffeine, hand-cited figures)."
+requires-python = ">=3.12"
+dependencies = [
+  "certifi>=2024.2.2",   # CA bundle for the PubChem and FDC fetches (macOS Python ships without one)
+]
+
+[tool.uv]
+package = false

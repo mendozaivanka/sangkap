@@ -1,0 +1,36 @@
+{
+ "foods": [
+  {
+   "fdcId": 171889,
+   "role": "filter-decaf",
+   "description": "Beverages, coffee, brewed, prepared with tap water, decaffeinated",
+   "dataType": "SR Legacy",
+   "publicationDate": "4/1/2019",
+   "caffeineMgPer100g": 1.0
+  },
+  {
+   "fdcId": 171890,
+   "role": "filter",
+   "description": "Beverages, coffee, brewed, prepared with tap water",
+   "dataType": "SR Legacy",
+   "publicationDate": "4/1/2019",
+   "caffeineMgPer100g": 40.0
+  },
+  {
+   "fdcId": 171891,
+   "role": "espresso",
+   "description": "Beverages, coffee, brewed, espresso, restaurant-prepared",
+   "dataType": "SR Legacy",
+   "publicationDate": "4/1/2019",
+   "caffeineMgPer100g": 212.0
+  },
+  {
+   "fdcId": 174125,
+   "role": "espresso-decaf",
+   "description": "Beverages, coffee, brewed, espresso, restaurant-prepared, decaffeinated",
+   "dataType": "SR Legacy",
+   "publicationDate": "4/1/2019",
+   "caffeineMgPer100g": 1.0
+  }
+ ]
+}

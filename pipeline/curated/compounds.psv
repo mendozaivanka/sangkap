@@ -1,0 +1,9 @@
+# Sangkap's five compounds (cafestol and kahweol share one card). Hand-edited; changes go through a pull request.
+# cid and pubchem_name are checked against PubChem by pubchem/fetch.py. Melanoidins are a class with no CID.
+slug|card|name|pubchem_name|cid|class|cup_label|blurb
+caffeine|caffeine|Caffeine|caffeine|2519|Alkaloid (methylxanthine)|caffeine|The stimulant. It survives roasting and dissolves readily in hot and cold water.
+cga|chlorogenic-acids|5-Caffeoylquinic acid|chlorogenic acid|1794427|Phenolic acid (chlorogenic acids)|CGA|The main chlorogenic acid in coffee. Chlorogenic acids are a family; 5-CQA stands in for them here.
+trigonelline|trigonelline|Trigonelline|trigonelline|5570|Alkaloid (pyridine)|trigonelline|A bitter alkaloid that partly breaks down during roasting.
+cafestol|cafestol-kahweol|Cafestol|cafestol|108052|Diterpene|cafestol|An oily diterpene. Paper filters hold most of it back.
+kahweol|cafestol-kahweol|Kahweol|kahweol|114778|Diterpene|kahweol|Cafestol's close relative, with one extra double bond.
+melanoidins|melanoidins|Melanoidins||||Roast polymers (a class)|melanoidins|Brown polymers made during roasting. A class of many molecules, so there is no single structure, formula or mass.
